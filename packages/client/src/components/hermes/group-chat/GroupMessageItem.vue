@@ -457,7 +457,7 @@ function playSpeech(content: string, autoplay = false) {
             provider: 'custom' as const,
             baseUrl: voiceSettings.customUrl.value,
             apiKey: voiceSettings.customApiKey.value || undefined,
-            voice: voiceSettings.customVoice.value,
+            voice: voiceSettings.customVoice.value.trim() || undefined,
         }
         if (autoplay) void speech.openaiPlay(props.message.id, content, options).catch(handleAutoplayTtsError)
         else speech.openaiToggle(props.message.id, content, options)

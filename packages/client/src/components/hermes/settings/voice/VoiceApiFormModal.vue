@@ -62,6 +62,7 @@ const selectedPreset = computed(() =>
 
 const isCustomProvider = computed(() => selectedPreset.value?.provider === 'custom')
 const isDoubaoTtsPreset = computed(() => props.kind === 'tts' && selectedPreset.value?.provider === 'doubao')
+const showVoiceField = computed(() => props.kind === 'tts' && !!selectedPreset.value?.capabilities?.voices)
 const canProbeModels = computed(() => compatibility.value === 'openai-compatible')
 const modelOptions = computed(() => {
   const discovered = probeModels.value.map(model => ({
@@ -465,20 +466,26 @@ async function handleSave() {
           <div v-else-if="probeErrorSummary" class="helper-text">{{ t('settings.voice.discoveryFailedManualFallback') }}</div>
         </section>
 
-        <section v-if="isDoubaoTtsPreset" class="form-section">
+        <section v-if="showVoiceField" class="form-section">
           <div class="section-heading">
             <span>{{ t('settings.voice.voice') }}</span>
-            <small>{{ t('settings.voice.doubaoVoiceHint') }}</small>
+            <small v-if="isDoubaoTtsPreset">{{ t('settings.voice.doubaoVoiceHint') }}</small>
           </div>
 
           <NFormItem :label="t('settings.voice.voice')">
             <NSelect
+              v-if="isDoubaoTtsPreset"
               v-model:value="formData.voice"
               :options="doubaoVoiceOptions"
               tag
               filterable
               data-testid="voice-provider-voice"
               @update:value="handleDoubaoVoiceUpdate"
+            />
+            <NInput
+              v-else
+              v-model:value="formData.voice"
+              data-testid="voice-provider-voice-input"
             />
           </NFormItem>
         </section>

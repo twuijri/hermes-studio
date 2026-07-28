@@ -84,7 +84,7 @@ const DEFAULT: VoiceSettingsData = {
 
   customUrl: '',
   customApiKey: '',
-  customVoice: 'alloy',
+  customVoice: '',
 
   edgeUrl: '',
   edgeVoice: 'zh-CN-XiaoxiaoNeural',
